@@ -1,0 +1,76 @@
+﻿@* 10. Part 3 *@
+@model IEnumerable<ParksModels.Dtos.TrailDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="p-3 rounded" style="background-color: #cde8e2">
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2 class="text-primary">Trails</h2>
+        </div>
+
+        <div class="col-md-6 text-right">
+            <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus" style="font-size: 14px"></i> &nbsp; Create New Trail</a>
+        </div>
+    </div>
+
+    <table class="table table-striped" id="myTable">
+        <thead>
+            <tr class="table-danger">
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Distance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DifficultyType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NationalPark.Name)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Distance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DifficultyType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NationalPark.Name)
+                    </td>
+                    <td>
+                        <a class="btn btn-success" asp-controller="Trails" asp-action="Edit" asp-route-id="@item.Id"><i class='far fa-edit'></i> Edit</a>
+                        <a class="btn btn-info" asp-controller="Trails" asp-action="Details" asp-route-id="@item.Id"><i class='fas fa-book-open'></i> Details</a>
+                        <a class="btn btn-danger" asp-controller="Trails" asp-action="Delete" asp-route-id="@item.Id"><i class='fas fa-trash'></i> Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+    @section Scripts{
+        <script>
+            $(function () {
+
+                // Enable DataTable Plugin
+                $('#myTable').DataTable();
+
+            });
+        </script>
+    }

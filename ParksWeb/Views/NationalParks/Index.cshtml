@@ -1,0 +1,125 @@
+﻿@* 9. Part 1, Part2 *@
+@model IEnumerable<ParksModels.Dtos.NationalParkDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="p-3 rounded" style="background-color: #cde8e2">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2 class="text-primary">National Parks</h2>
+        </div>
+
+        <div class="col-md-6 text-right">
+            <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus" style="font-size: 14px"></i> &nbsp; Create New National Park</a>
+        </div>
+    </div>
+
+    <table class="table table-striped" id="myTable">
+        <thead>
+            <tr class="table-danger">
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Picture)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Established)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
+                        @{
+                            var imgBase64 = Convert.ToBase64String(item.Picture);
+                            var imgSrc = string.Format("data:image/jpg;base64,{0}", imgBase64);
+                        }
+                        <img src="@imgSrc" class="img-thumbnail" style="width: 100px; height: 100px !important" alt="Img" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Established)
+                    </td>
+                    <td>
+                        <a class="btn btn-success" asp-controller="NationalParks" asp-action="Edit" asp-route-id="@item.Id"><i class='far fa-edit'></i> Edit</a>
+                        <a class="btn btn-info" asp-controller="NationalParks" asp-action="Details" asp-route-id="@item.Id"><i class='fas fa-book-open'></i> Details</a>
+                        <a class="btn btn-danger deleteElem" style="color:white; cursor:pointer" data-url="/nationalParks/Delete/@item.Id"><i class='fas fa-trash'></i> Delete</a>
+
+                        @*<a class="btn btn-danger" asp-controller="NationalParks" asp-action="Delete" asp-route-id="@item.Id"><i class='fas fa-trash'></i> Delete</a>*@
+
+                        @*<form method="post" asp-action="Delete" asp-route-id="@item.Id" style="display: inline-block">
+                                <button type="submit" id="DeleteElem" class="btn btn-danger"><i class='fas fa-trash'></i> &nbsp; Delete</button>
+                            </form>*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+
+            // Enable DataTable Plugin
+            $('#myTable').DataTable();
+
+
+            // 9. Part 9,, we should do that by using delete form tag not <a>, to send requestVerfication token in the ajax call, for preventing antiForgeryattacks. Also we should use [ValidateAntiForgery] in the Delete Action method. (When the form is created, a requestverfication input is created)
+            // -----------------
+
+            // Delete Element
+            $(".deleteElem").on("click", function () {
+
+                var url = $(this).attr("data-url");
+                
+                swal({
+                    icon: 'warning',
+                    title: 'Confirm Delete That Element',
+                    text: 'You will not be able to restore the data!',
+                    buttons: true,
+                    dangerMode: true
+                }).then((result) => {
+
+                    if (result) {
+                        $.ajax({
+
+                            type: 'DELETE',
+                            url: url,
+                            success: function (data) {
+                                if (data.success) {
+                                    toastr.success(data.message);
+                                    location.reload(); // reload the page
+                                }
+                                else {
+                                    toastr.error(data.message);
+                                }
+                            }
+
+                        });
+                    }
+
+                });
+            });
+
+            // -----------------
+
+        });
+    </script>
+}

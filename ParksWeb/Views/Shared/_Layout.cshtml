@@ -1,0 +1,172 @@
+﻿@* 13. Part 5 *@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAcc
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ParksWeb</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!-- Start 8. Part 9 -->
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/jqueryui/jquery-ui.css" />
+        <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.css" />
+        <link rel="stylesheet" href="~/lib/toastr.js/toastr.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    </environment>
+
+    <environment exclude="Development">
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+              asp-fallback-href="~/lib/datatables/css/jquery.dataTables.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" asp-suppress-fallback-integrity="true">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+              asp-fallback-href="~/lib/jqueryui/jquery-ui.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" asp-suppress-fallback-integrity="true">
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+              asp-fallback-href="~/lib/toastr.js/toastr.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" asp-suppress-fallback-integrity="true">
+
+    </environment>
+
+    <!-- End 8. Part 9 -->
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success mb-3">
+            <div class="container">
+                <a class="navbar-brand text-white-50" asp-area="" asp-controller="Home" asp-action="Index">ParksWeb</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>*@
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("User"))@* we can use User property since we use CookieAuthenticationDefaults  and we created PrincipalClaims *@
+                        {
+                            <!-- Start 9. Part 1 -->
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="NationalParks" asp-action="Index">National Parks</a>
+                            </li>
+                            <!-- End 9. Part 1 -->
+                            <!-- Start 10. Part 3 -->
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Trails" asp-action="Index">Trails</a>
+                            </li>
+                            <!-- End 10. Part 3 -->
+                        }
+                        <!-- Start 13. Part 5 -->
+                        @if (httpContextAcc.HttpContext.Session.GetString("JWToken") != null && httpContextAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-controller="Account" asp-action="LogOut">
+                                    <button class="btn btn-link nav-link text-white">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
+                        <!-- End 13. Part 5 -->
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+
+            <!-- Start 13. Part 10 -->
+
+            @if(TempData["alert"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["alert"]
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!-- End 13. Part 10 -->
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - ParksWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+
+    <!-- Start 8. Part 9 -->
+
+    <environment include="Development">
+        <script src="~/lib/jqueryui/jquery-ui.js"></script>
+        <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+        <script src="~/lib/toastr.js/toastr.min.js"></script>
+        <script src="~/lib/sweetalert/sweetalert.min.js"></script>
+        <script src="~/lib/font-awesome/js/all.js"></script>
+    </environment>
+
+    <environment exclude="Development">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+                asp-fallback-src="~/lib/jqueryui/jquery-ui.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+
+        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"
+                asp-fallback-src="~/lib/datatables/js/jquery.dataTables.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+                asp-fallback-src="~/lib/toastr.js/toastr.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"
+                asp-fallback-src="~/lib/sweetalert/sweetalert.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+
+        <script src="https://kit.fontawesome.com/797773c828.js" crossorigin="anonymous"></script>
+
+    </environment>
+
+    <!-- End 8. Part 9 -->
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

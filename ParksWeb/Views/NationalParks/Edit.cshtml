@@ -1,0 +1,82 @@
+﻿@* 9. Part 5, 6, 7 *@
+@model ParksModels.Dtos.NationalParkUpdateDto
+
+@{
+    ViewData["Title"] = "Edit National Park";
+}
+
+<h1>Edit National Park</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="Picture" type="hidden" />
+            
+            <div class="form-group row">
+                <label asp-for="Name" class="control-label col-sm-2"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="State" class="control-label col-sm-2"></label>
+                <div class="col-sm-10">
+                    <input asp-for="State" class="form-control" />
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="PictureFile" class="control-label col-sm-2"></label>
+                <div class="col-sm-10">
+                    <input id="PictureFile" name="PictureFile" type="file" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Established" class="control-label col-sm-2"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Established" value="@Model.Established.ToShortDateString()" class="form-control" />
+                    <span asp-validation-for="Established" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Back to List</a>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="offset-md-2 col-md-4 text-right">
+        @* 9. Part 7 *@
+        @{ 
+            var imgBase64 = Convert.ToBase64String(Model.Picture);
+            var imgSrc = string.Format("data:image/jpg;base64,{0}", imgBase64);
+        }
+        <img src="@imgSrc" class="img-thumbnail" style="width: 255px; height: 255px !important" alt="Img" />
+    </div>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+            $(function () {
+
+                $("#Established").datepicker({
+                    "changeMonth": true,
+                    "changeYear": true,
+                    "yearRange": "1900:2020"
+                });
+
+            });
+    </script>
+
+}
