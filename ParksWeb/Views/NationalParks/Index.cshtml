@@ -58,7 +58,7 @@
                     </td>
                     <td>
                         <a class="btn btn-success" asp-controller="NationalParks" asp-action="Edit" asp-route-id="@item.Id"><i class='far fa-edit'></i> Edit</a>
-                        <a class="btn btn-info" asp-controller="NationalParks" asp-action="Details" asp-route-id="@item.Id"><i class='fas fa-book-open'></i> Details</a>
+                        @*<a class="btn btn-info" asp-controller="NationalParks" asp-action="Details" asp-route-id="@item.Id"><i class='fas fa-book-open'></i> Details</a>*@
                         <a class="btn btn-danger deleteElem" style="color:white; cursor:pointer" data-url="/nationalParks/Delete/@item.Id"><i class='fas fa-trash'></i> Delete</a>
 
                         @*<a class="btn btn-danger" asp-controller="NationalParks" asp-action="Delete" asp-route-id="@item.Id"><i class='fas fa-trash'></i> Delete</a>*@

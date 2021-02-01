@@ -255,7 +255,7 @@ namespace ParksAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             // 5. Part 2
             // -----------------------------

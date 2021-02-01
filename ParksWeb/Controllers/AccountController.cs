@@ -46,7 +46,7 @@ namespace ParksWeb.Controllers
                 
                 if (userDto == null)
                 {
-                    ModelState.AddModelError("", "Error occured");
+                    ModelState.AddModelError("", "UserName or Password incorrect.");
                     return View(model);
                 }
 
@@ -96,13 +96,17 @@ namespace ParksWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.Role = "User";
                 var result = await _accountRepo.RegisterAsync(_accountUrl + "register", model, HttpContext.Session.GetString("JWToken"));
 
                 if (!result)
                 {
-                    ModelState.AddModelError("", "Error occured");
+                    ModelState.AddModelError("", "Registeration Failed.");
                     return View(model);
                 }
+
+                // temp data is used to store the data in something like a session but only for one request. So if a page goes from one page to one other it will have those information. But if you refresh the page that will go away
+                TempData["alert"] = "Registeration Successfully."; // 13. Part 10
 
                 return RedirectToAction("Login", "Account");
             }
@@ -121,9 +125,6 @@ namespace ParksWeb.Controllers
             // -----------------------
 
             HttpContext.Session.SetString("JWToken", ""); // can i use "HttpContext.Session.Remove("JWToken");"
-
-            // temp data is used to store the data in something like a session but only for one request. So if a page goes from one page to one other it will have those information. But if you refresh the page that will go away
-            TempData["alert"] = "Registeration Successfully."; // 13. Part 10
 
             return RedirectToAction("Index", "Home");
         }

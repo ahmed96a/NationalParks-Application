@@ -39,7 +39,7 @@ namespace ParksAPI
                 });
 
                 // Tell Swashbuckle where it can find Xml Comments so it can incorporate them into the OpenAPI specification document.
-                options.IncludeXmlComments("ParksAPI.xml");
+                //options.IncludeXmlComments("ParksAPI.xml");
             }
 
 

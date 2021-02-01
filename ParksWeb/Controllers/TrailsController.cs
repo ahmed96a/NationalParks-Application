@@ -137,6 +137,7 @@ namespace ParksWeb.Controllers
         // ----------------------
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

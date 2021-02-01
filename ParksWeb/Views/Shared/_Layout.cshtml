@@ -71,7 +71,8 @@
                             <!-- End 10. Part 3 -->
                         }
                         <!-- Start 13. Part 5 -->
-                        @if (httpContextAcc.HttpContext.Session.GetString("JWToken") != null && httpContextAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
+                        @*@if (httpContextAcc.HttpContext.Session.GetString("JWToken") != null && httpContextAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)*@
+                        @if(User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <form method="post" asp-controller="Account" asp-action="LogOut">
