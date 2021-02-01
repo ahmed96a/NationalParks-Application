@@ -25,5 +25,6 @@ Web Application to manage NationalParks and it's trails information.
   123asd
 
 ## Application Live
-- 
 
+  - [Application](http://nationalparks-001-site1.btempurl.com/)<br>
+  - [API Documentation](http://nationalparkapi-001-site1.ftempurl.com/swagger/index.html)
